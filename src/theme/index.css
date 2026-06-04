@@ -1,0 +1,101 @@
+html,
+body {
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  background-color: #242932;
+}
+
+button {
+  height: 80px;
+  width: 200px;
+  border-radius: 20px;
+  border-color: transparent;
+  font-size: 20px;
+  cursor: pointer;
+  background-color: #30475fa4;
+  color: #9494b4;
+
+  &:disabled {
+    background-color: #6d859ea4;
+    color: gray;
+    cursor: not-allowed;
+  }
+}
+
+#logo {
+  position: absolute;
+  z-index: 1;
+  background-image: url("/logo.svg");
+  background-repeat: no-repeat;
+  background-position: 0 center;
+  background-size: 60px 60px;
+  margin: 5px;
+  width: 64px;
+  height: 64px;
+  background-color: transparent;
+  border-color: transparent;
+}
+
+#menu {
+  position: absolute;
+  z-index: 2;
+  background-color: #27292ba4;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  section {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+#pause {
+  position: absolute;
+  z-index: 2;
+  display: none;
+  background-color: #27292ba4;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 50px;
+
+  section {
+    height: 100%;
+    background-color: #1a222ea4;
+    border-radius: 30px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+#log {
+  position: absolute;
+  z-index: 1;
+  overflow: auto;
+  top: 5px;
+  right: 5px;
+  bottom: 5px;
+  padding-left: 10px;
+  background-color: #44111aa2;
+  font-weight: bold;
+  color: gray;
+  border-radius: 14px;
+
+  font-size: 12px;
+  width: 220px;
+
+  @media (max-width: 1024px) {
+    font-size: 7px;
+    width: 130px;
+  }
+}
