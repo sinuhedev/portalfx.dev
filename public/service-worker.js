@@ -1,4 +1,4 @@
-const CACHE = 'app-v1'
+const CACHE = 'portalfx'
 
 self.addEventListener('install', (event) => {
   self.skipWaiting()

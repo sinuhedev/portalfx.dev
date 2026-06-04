@@ -1,6 +1,6 @@
 {
   "name": "portalfx.dev",
-  "short_name": "portalfx.dev",
+  "short_name": "Portal FX.",
   "description": "portalfx.dev",
 
   "start_url": "/",
@@ -13,7 +13,7 @@
     {
       "src": "logo.webp",
       "sizes": "48x48 72x72 96x96 128x128 256x256 512x512",
-      "type": "image/svg+xml"
+      "type": "image/webp"
     }
   ],
 
@@ -21,7 +21,7 @@
     {
       "src": "logo.webp",
       "sizes": "256x256",
-      "type": "image/svg+xml"
+      "type": "image/webp"
     }
   ]
 }
