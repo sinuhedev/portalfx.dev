@@ -40,12 +40,6 @@ jobs:
         with:
           path: out
 
-      - name: notifications
-        env:
-          DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
-        run: |
-          curl -H "Content-Type: application/json" -d '{"username": "github", "content": "https://portalfx.dev"}' "https://discord.com/api/webhooks/${DISCORD_TOKEN}"
-
   deploy:
     needs: build
     runs-on: ubuntu-latest
@@ -56,3 +50,12 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
+
+      - name: Discord notification
+        env:
+          DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
+        run: |
+          curl \
+            -H "Content-Type: application/json" \
+            -d '{"username":"github","content":"https://portalfx.dev"}' \
+            "https://discord.com/api/webhooks/${DISCORD_TOKEN}"
