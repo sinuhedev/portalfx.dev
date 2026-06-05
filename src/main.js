@@ -1,9 +1,9 @@
 import 'utils/serviceWorker'
+import GameEngine from 'lib/GameEngine'
 import Player from 'objects/Player'
 import LevelScene from 'scenes/LevelScene'
-import { WebGLGame } from 'utils'
 
-class Game extends WebGLGame {
+class Game extends GameEngine {
   #scene
   #player
 

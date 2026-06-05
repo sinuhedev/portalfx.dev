@@ -16,6 +16,7 @@ export default defineConfig(() => {
 
     resolve: {
       alias: {
+        lib: `${CWD}/src/lib`,
         fonts: `${CWD}/src/fonts`,
         models: `${CWD}/src/models`,
         objects: `${CWD}/src/objects`,

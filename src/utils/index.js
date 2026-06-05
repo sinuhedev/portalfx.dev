@@ -1,4 +1,3 @@
-import { isMobile } from './util'
-import WebGLGame from './WebGLGame'
+const isMobile = () => window.matchMedia('(pointer: coarse)').matches
 
-export { isMobile, WebGLGame }
+export { isMobile }

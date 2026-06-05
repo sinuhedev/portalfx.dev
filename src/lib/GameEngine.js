@@ -1,7 +1,7 @@
 import { MathUtils, PerspectiveCamera, WebGLRenderer } from 'three'
-import { isMobile } from './util'
+import { isMobile } from 'utils'
 
-class WebGLGame {
+class GameEngine {
   #animationId
   #inputKeys = {
     keyboard: {
@@ -423,4 +423,4 @@ class WebGLGame {
   onDispose() {}
 }
 
-export default WebGLGame
+export default GameEngine
