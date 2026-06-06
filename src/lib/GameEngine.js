@@ -82,7 +82,11 @@ class GameEngine extends GameInput {
 
       this.#gamepad()
 
-      this.#log()
+      this.#log({
+        keys: this.keys,
+        isMobile: this.isMobile,
+        inputKeys: this.#inputKeys
+      })
 
       if (this.keys.IS_PAUSE) return
 
@@ -391,20 +395,13 @@ class GameEngine extends GameInput {
     this.keys.IS_PAUSE = false
   }
 
-  #log() {
-    const log = {
-      isMobile: this.isMobile,
-      keys: this.keys,
-      inputKeys: this.#inputKeys
-    }
-
-    document.body.appendChild(document.getElementById('log')).innerHTML =
-      JSON.stringify(
-        log,
-        (_, value) =>
-          typeof value === 'number' ? parseFloat(value.toFixed(3)) : value,
-        2
-      )
+  #log(values) {
+    document.getElementById('log-content').textContent = JSON.stringify(
+      values,
+      (_, value) =>
+        typeof value === 'number' ? parseFloat(value.toFixed(3)) : value,
+      2
+    )
   }
 
   #dispose() {
