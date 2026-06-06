@@ -1,7 +1,8 @@
 import { MathUtils, PerspectiveCamera, WebGLRenderer } from 'three'
-import { isMobile } from 'utils'
+import GameInput from './GameInput'
+import GameUI from './GameUI'
 
-class GameEngine {
+class GameEngine extends GameInput {
   #animationId
   #inputKeys = {
     keyboard: {
@@ -29,11 +30,11 @@ class GameEngine {
     winPause: null,
     btnContinue: null
   }
-  #log = {}
 
   canvas
   renderer
   camera
+  isMobile
   keys = {
     UP: 0,
     DOWN: 0,
@@ -49,15 +50,14 @@ class GameEngine {
   }
 
   constructor(canvas) {
+    super()
+
+    this.input = new GameInput()
+    this.ui = new GameUI()
+
     this.canvas = canvas
     this.renderer = new WebGLRenderer({ canvas })
     this.camera = new PerspectiveCamera(75, 1, 0.1, 1000)
-
-    if (isMobile()) {
-      this.keys.SENSITIVITY = 80
-    } else {
-      this.keys.SENSITIVITY = 800
-    }
   }
 
   async start() {
@@ -67,7 +67,7 @@ class GameEngine {
 
     await this.onInit()
 
-    this.#menu()
+    // this.#menu()
     this.#gui()
     this.#resize()
     this.#keyboard()
@@ -82,16 +82,13 @@ class GameEngine {
 
       this.#gamepad()
 
-      this.#logger()
+      this.#log()
 
       if (this.keys.IS_PAUSE) return
 
       this.onAnimate(delta)
     }
     animate(0)
-
-    this.log('keys', this.keys)
-    this.log('inputKeys', this.#inputKeys)
 
     this.#dispose()
   }
@@ -100,7 +97,6 @@ class GameEngine {
     const width = this.canvas.style.width || '100%'
     const height = this.canvas.style.height || '100%'
 
-    // Resize
     const onResize = () => {
       this.canvas.style.width = width
       this.canvas.style.height = height
@@ -109,7 +105,16 @@ class GameEngine {
       this.renderer.setSize(clientWidth, clientHeight)
       this.camera.aspect = clientWidth / clientHeight
       this.camera.updateProjectionMatrix()
+
+      this.isMobile = window.matchMedia('(pointer: coarse)').matches
+
+      if (this.isMobile) {
+        this.keys.SENSITIVITY = 80
+      } else {
+        this.keys.SENSITIVITY = 800
+      }
     }
+
     onResize()
     window.addEventListener('resize', onResize)
   }
@@ -119,9 +124,9 @@ class GameEngine {
     const winMenu = document.getElementById('menu')
 
     btnStart.addEventListener('click', async () => {
-      await document.documentElement.requestFullscreen()
+      // await document.documentElement.requestFullscreen()
 
-      if (isMobile()) {
+      if (this.isMobile) {
         try {
           await screen.orientation.lock('landscape')
         } catch (err) {
@@ -189,8 +194,6 @@ class GameEngine {
 
     document.addEventListener('mousemove', ({ movementX, movementY }) => {
       if (document.pointerLockElement === this.canvas) {
-        this.log('movement', { movementX, movementY })
-
         this.keys.AZIMUTH -= movementX / this.keys.SENSITIVITY
         this.keys.POLAR -= movementY / this.keys.SENSITIVITY
 
@@ -296,6 +299,8 @@ class GameEngine {
     })
   }
 
+  // index = 0
+  // wasPressed = false
   #gamepad() {
     const gamepad = navigator.getGamepads()[0]
     if (!gamepad) return
@@ -341,29 +346,19 @@ class GameEngine {
       )
     }
 
-    //
-
     // const focusable = [...document.querySelectorAll('button')]
-    // const current = document.activeElement
-    // const index = focusable.indexOf(current)
+    // // const current = document.activeElement
+    // // const index = focusable.indexOf(current)
 
-    // const down = gamepad.buttons[13].pressed || gamepad.axes[1] > 0.5
-    // const up = gamepad.buttons[12].pressed || gamepad.axes[1] < -0.5
+    // const down = gamepad.buttons[13].pressed
+    // const up = gamepad.buttons[12].pressed
 
-    // if (down && index < focusable.length - 1) {
-    //   focusable[index + 1].focus()
+    // if (down && !this.wasPressed) {
+    //   this.index += 1
     // }
+    // this.wasPressed = down
 
-    // if (up && index > 0) {
-    //   focusable[index - 1].focus()
-    // }
-
-    // // A / Cruz para confirmar
-    // if (gamepad.buttons[0].pressed) {
-    //   current?.click()
-    // }
-
-    //
+    // focusable[this.index].focus({ focusVisible: true })
 
     this.#mergeInputs()
   }
@@ -396,10 +391,16 @@ class GameEngine {
     this.keys.IS_PAUSE = false
   }
 
-  #logger() {
+  #log() {
+    const log = {
+      isMobile: this.isMobile,
+      keys: this.keys,
+      inputKeys: this.#inputKeys
+    }
+
     document.body.appendChild(document.getElementById('log')).innerHTML =
       JSON.stringify(
-        this.#log,
+        log,
         (_, value) =>
           typeof value === 'number' ? parseFloat(value.toFixed(3)) : value,
         2
@@ -412,10 +413,6 @@ class GameEngine {
       this.renderer.dispose()
       this.onDispose()
     })
-  }
-
-  log(key, value) {
-    this.#log[key] = value
   }
 
   async onInit() {}
