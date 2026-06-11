@@ -16,14 +16,9 @@ export default defineConfig(() => {
 
     resolve: {
       alias: {
-        lib: `${CWD}/src/lib`,
-        fonts: `${CWD}/src/fonts`,
-        models: `${CWD}/src/models`,
+        assets: `${CWD}/src/assets`,
         objects: `${CWD}/src/objects`,
         scenes: `${CWD}/src/scenes`,
-        shaders: `${CWD}/src/shaders`,
-        sounds: `${CWD}/src/sounds`,
-        textures: `${CWD}/src/textures`,
         utils: `${CWD}/src/utils`
       }
     },

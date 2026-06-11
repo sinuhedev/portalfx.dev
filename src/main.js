@@ -1,7 +1,7 @@
 import 'utils/serviceWorker'
-import GameEngine from 'lib/GameEngine'
 import Player from 'objects/Player'
 import LevelScene from 'scenes/LevelScene'
+import GameEngine from './lib/GameEngine'
 
 class Game extends GameEngine {
   #scene

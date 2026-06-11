@@ -1,5 +1,5 @@
-import diffuseTexture from 'textures/Rock035_1K-JPG_Diff.jpg'
-import normalTexture from 'textures/Rock035_1K-JPG_NormalGL.jpg'
+import diffuseTexture from 'assets/textures/Rock035_1K-JPG_Diff.jpg'
+import normalTexture from 'assets/textures/Rock035_1K-JPG_NormalGL.jpg'
 import {
   MathUtils,
   Mesh,

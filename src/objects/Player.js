@@ -1,4 +1,4 @@
-import player from 'models/player/player.glb?url'
+import player from 'assets/models/player/player.glb?url'
 import { AnimationMixer, MathUtils, Object3D, Quaternion, Vector3 } from 'three'
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
 

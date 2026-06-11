@@ -1,6 +1,6 @@
-import textureFrag from 'shaders/texture.frag.glsl'
-import textureVert from 'shaders/texture.vert.glsl'
-import rockTesture from 'textures/rock.webp'
+import textureFrag from 'assets/shaders/texture.frag.glsl'
+import textureVert from 'assets/shaders/texture.vert.glsl'
+import rockTesture from 'assets/textures/rock.webp'
 import {
   BoxGeometry,
   Mesh,
