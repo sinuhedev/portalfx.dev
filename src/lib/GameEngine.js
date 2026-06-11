@@ -15,7 +15,6 @@ class GameEngine {
   canvas
   renderer
   camera
-  isMobile
 
   constructor(canvas) {
     this.input = new GameInput(canvas)
@@ -63,8 +62,6 @@ class GameEngine {
     const height = this.canvas.style.height || '100%'
 
     const onResize = () => {
-      this.isMobile = window.matchMedia('(pointer: coarse)').matches
-
       this.canvas.style.width = width
       this.canvas.style.height = height
 
@@ -72,6 +69,12 @@ class GameEngine {
       this.renderer.setSize(clientWidth, clientHeight)
       this.camera.aspect = clientWidth / clientHeight
       this.camera.updateProjectionMatrix()
+
+      const IS_MOBILE = window.matchMedia('(pointer: coarse)').matches
+
+      if (IS_MOBILE) {
+      } else {
+      }
     }
 
     onResize()
