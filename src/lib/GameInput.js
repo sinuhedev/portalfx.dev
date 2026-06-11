@@ -10,10 +10,11 @@ class GameInput {
   IS_RUN = false
   AZIMUTH = 0 // angulo horizontal
   POLAR = MathUtils.degToRad(70) // angulo vertical
-  SENSITIVITY = 100
+  SENSITIVITY = 0
   CAMERA_RADIUS = 3
 
   #canvas
+
   #keyboard = {
     UP: 0,
     RIGHT: 0,
@@ -37,6 +38,27 @@ class GameInput {
 
   constructor(canvas) {
     this.#canvas = canvas
+    this.#ignoreEvents()
+    this.#resize()
+  }
+
+  #ignoreEvents() {
+    window.addEventListener('contextmenu', (e) => e.preventDefault())
+    document.addEventListener('gesturestart', (e) => e.preventDefault())
+  }
+
+  #resize() {
+    const onResize = () => {
+      const IS_MOBILE = window.matchMedia('(pointer: coarse)').matches
+
+      if (IS_MOBILE) {
+        this.SENSITIVITY = 80
+      } else {
+        this.SENSITIVITY = 800
+      }
+    }
+    onResize()
+    window.addEventListener('resize', onResize)
   }
 
   keyboard() {
@@ -237,6 +259,14 @@ class GameInput {
     }
 
     gamepadLoop()
+  }
+
+  pause() {
+    this.IS_PAUSE = true
+  }
+
+  resume() {
+    this.IS_PAUSE = false
   }
 
   #mergeInputs() {

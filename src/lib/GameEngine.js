@@ -1,4 +1,4 @@
-import { MathUtils, PerspectiveCamera, WebGLRenderer } from 'three'
+import { PerspectiveCamera, WebGLRenderer } from 'three'
 import GameInput from './GameInput'
 import GameUI from './GameUI'
 
@@ -27,10 +27,6 @@ class GameEngine {
   }
 
   async start() {
-    //  ignore events
-    window.addEventListener('contextmenu', (e) => e.preventDefault())
-    document.addEventListener('gesturestart', (e) => e.preventDefault())
-
     await this.onInit()
 
     // this.#menu()
@@ -49,8 +45,8 @@ class GameEngine {
       lastTime = time
 
       this.#log({
-        input: this.input,
-        isMobile: this.isMobile
+        isMobile: this.isMobile,
+        input: this.input
       })
 
       if (this.input.IS_PAUSE) return
@@ -67,6 +63,8 @@ class GameEngine {
     const height = this.canvas.style.height || '100%'
 
     const onResize = () => {
+      this.isMobile = window.matchMedia('(pointer: coarse)').matches
+
       this.canvas.style.width = width
       this.canvas.style.height = height
 
@@ -74,14 +72,6 @@ class GameEngine {
       this.renderer.setSize(clientWidth, clientHeight)
       this.camera.aspect = clientWidth / clientHeight
       this.camera.updateProjectionMatrix()
-
-      this.isMobile = window.matchMedia('(pointer: coarse)').matches
-
-      if (this.isMobile) {
-        this.input.SENSITIVITY = 80
-      } else {
-        this.input.SENSITIVITY = 800
-      }
     }
 
     onResize()
@@ -112,26 +102,20 @@ class GameEngine {
   #gui() {
     this.#ui.winPause = document.getElementById('pause')
     this.#ui.btnContinue = document.getElementById('continue')
-    this.#ui.btnContinue.addEventListener('click', () => this.#resume())
+    this.#ui.btnContinue.addEventListener('click', () => {
+      this.canvas.requestPointerLock()
+      this.#ui.winPause.style.display = 'none'
+      this.input.resume()
+    })
 
     const btnLogo = document.getElementById('logo')
     btnLogo.addEventListener('click', async () => {
-      this.#pause()
+      this.#ui.winPause.style.display = 'block'
+      this.input.pause()
+
+      this.#ui.btnContinue.disabled = true
+      setTimeout(() => (this.#ui.btnContinue.disabled = false), 1000)
     })
-  }
-
-  #pause() {
-    this.#ui.winPause.style.display = 'block'
-    this.input.IS_PAUSE = true
-
-    this.#ui.btnContinue.disabled = true
-    setTimeout(() => (this.#ui.btnContinue.disabled = false), 1000)
-  }
-
-  #resume() {
-    this.canvas.requestPointerLock()
-    this.#ui.winPause.style.display = 'none'
-    this.input.IS_PAUSE = false
   }
 
   #log(values) {
