@@ -2,56 +2,22 @@ import { MathUtils, PerspectiveCamera, WebGLRenderer } from 'three'
 import GameInput from './GameInput'
 import GameUI from './GameUI'
 
-class GameEngine extends GameInput {
+class GameEngine {
   #animationId
-  #inputKeys = {
-    keyboard: {
-      UP: 0,
-      RIGHT: 0,
-      DOWN: 0,
-      LEFT: 0,
-      SHIFT: 0
-    },
-    touchpad: {
-      UP: 0,
-      RIGHT: 0,
-      DOWN: 0,
-      LEFT: 0
-    },
-    gamepad: {
-      UP: 0,
-      RIGHT: 0,
-      DOWN: 0,
-      LEFT: 0,
-      PAUSE_PRESSED: false
-    }
-  }
+
   #ui = {
     winPause: null,
     btnContinue: null
   }
 
+  input
+
   canvas
   renderer
   camera
   isMobile
-  keys = {
-    UP: 0,
-    DOWN: 0,
-    LEFT: 0,
-    RIGHT: 0,
-    IS_PAUSE: false,
-    IS_MOVE: false,
-    IS_RUN: false,
-    AZIMUTH: 0, // angulo horizontal
-    POLAR: MathUtils.degToRad(70), // angulo vertical,
-    SENSITIVITY: 100,
-    CAMERA_RADIUS: 3
-  }
 
   constructor(canvas) {
-    super()
-
     this.input = new GameInput()
     this.ui = new GameUI()
 
@@ -83,12 +49,11 @@ class GameEngine extends GameInput {
       this.#gamepad()
 
       this.#log({
-        keys: this.keys,
-        isMobile: this.isMobile,
-        inputKeys: this.#inputKeys
+        input: this.input,
+        isMobile: this.isMobile
       })
 
-      if (this.keys.IS_PAUSE) return
+      if (this.input.IS_PAUSE) return
 
       this.onAnimate(delta)
     }
@@ -113,9 +78,9 @@ class GameEngine extends GameInput {
       this.isMobile = window.matchMedia('(pointer: coarse)').matches
 
       if (this.isMobile) {
-        this.keys.SENSITIVITY = 80
+        this.input.SENSITIVITY = 80
       } else {
-        this.keys.SENSITIVITY = 800
+        this.input.SENSITIVITY = 800
       }
     }
 
@@ -159,24 +124,23 @@ class GameEngine extends GameInput {
     // Key down and up
     const keyDownUpEventListener = (evt) => {
       const { code, type } = evt
-      const keyType =
-        type === 'keydown' ? 0.7 + this.#inputKeys.keyboard.SHIFT : 0
+      const keyType = type === 'keydown' ? 0.7 + this.input.keyboard.SHIFT : 0
 
       switch (code) {
         case 'KeyW':
-          this.#inputKeys.keyboard.UP = keyType
+          this.input.keyboard.UP = keyType
           break
         case 'KeyS':
-          this.#inputKeys.keyboard.DOWN = keyType
+          this.input.keyboard.DOWN = keyType
           break
         case 'KeyA':
-          this.#inputKeys.keyboard.LEFT = keyType
+          this.input.keyboard.LEFT = keyType
           break
         case 'KeyD':
-          this.#inputKeys.keyboard.RIGHT = keyType
+          this.input.keyboard.RIGHT = keyType
           break
         case 'ShiftLeft':
-          this.#inputKeys.keyboard.SHIFT = type === 'keydown' ? 0.3 : 0
+          this.input.keyboard.SHIFT = type === 'keydown' ? 0.3 : 0
           break
       }
 
@@ -189,7 +153,7 @@ class GameEngine extends GameInput {
     // mouse
     document.addEventListener('pointerdown', (evt) => {
       if (
-        !this.keys.IS_PAUSE &&
+        !this.input.IS_PAUSE &&
         evt.target.tagName === 'CANVAS' &&
         evt.pointerType === 'mouse'
       )
@@ -198,18 +162,18 @@ class GameEngine extends GameInput {
 
     document.addEventListener('mousemove', ({ movementX, movementY }) => {
       if (document.pointerLockElement === this.canvas) {
-        this.keys.AZIMUTH -= movementX / this.keys.SENSITIVITY
-        this.keys.POLAR -= movementY / this.keys.SENSITIVITY
+        this.input.AZIMUTH -= movementX / this.input.SENSITIVITY
+        this.input.POLAR -= movementY / this.input.SENSITIVITY
 
-        this.keys.POLAR = Math.max(
+        this.input.POLAR = Math.max(
           MathUtils.degToRad(30),
-          Math.min(MathUtils.degToRad(60), this.keys.POLAR)
+          Math.min(MathUtils.degToRad(60), this.input.POLAR)
         )
       }
     })
 
     document.addEventListener('pointerlockchange', () => {
-      if (document.pointerLockElement === null && !this.keys.IS_PAUSE) {
+      if (document.pointerLockElement === null && !this.input.IS_PAUSE) {
         this.#pause()
       }
     })
@@ -221,18 +185,18 @@ class GameEngine extends GameInput {
     this.canvas.style.touchAction = 'none'
 
     const recalculate = () => {
-      this.#inputKeys.touchpad.LEFT = 0
-      this.#inputKeys.touchpad.RIGHT = 0
-      this.#inputKeys.touchpad.UP = 0
-      this.#inputKeys.touchpad.DOWN = 0
+      this.input.touchpad.LEFT = 0
+      this.input.touchpad.RIGHT = 0
+      this.input.touchpad.UP = 0
+      this.input.touchpad.DOWN = 0
 
       for (const [, pointer] of pointers) {
         if (pointer.side !== 'left') continue
 
-        this.#inputKeys.touchpad.LEFT += pointer.LEFT ?? 0
-        this.#inputKeys.touchpad.RIGHT += pointer.RIGHT ?? 0
-        this.#inputKeys.touchpad.UP += pointer.UP ?? 0
-        this.#inputKeys.touchpad.DOWN += pointer.DOWN ?? 0
+        this.input.touchpad.LEFT += pointer.LEFT ?? 0
+        this.input.touchpad.RIGHT += pointer.RIGHT ?? 0
+        this.input.touchpad.UP += pointer.UP ?? 0
+        this.input.touchpad.DOWN += pointer.DOWN ?? 0
       }
 
       this.#mergeInputs()
@@ -273,12 +237,12 @@ class GameEngine extends GameInput {
         origin.DOWN = angle > 0.79 && angle < 2.36 ? MOVE + RUN : 0
         origin.LEFT = Math.abs(angle) > 1.96 ? MOVE + RUN : 0
       } else {
-        this.keys.AZIMUTH -= e.movementX / this.keys.SENSITIVITY
-        this.keys.POLAR -= e.movementY / this.keys.SENSITIVITY
+        this.input.AZIMUTH -= e.movementX / this.input.SENSITIVITY
+        this.input.POLAR -= e.movementY / this.input.SENSITIVITY
 
-        this.keys.POLAR = Math.max(
+        this.input.POLAR = Math.max(
           MathUtils.degToRad(30),
-          Math.min(MathUtils.degToRad(60), this.keys.POLAR)
+          Math.min(MathUtils.degToRad(60), this.input.POLAR)
         )
 
         origin.x = e.clientX
@@ -314,20 +278,20 @@ class GameEngine extends GameInput {
      */
     const PAUSE = gamepad.buttons[16].pressed
 
-    if (PAUSE && !this.#inputKeys.gamepad.PAUSE_PRESSED) {
-      this.#inputKeys.gamepad.PAUSE_PRESSED = true
+    if (PAUSE && !this.input.gamepad.PAUSE_PRESSED) {
+      this.input.gamepad.PAUSE_PRESSED = true
 
-      if (this.keys.IS_PAUSE) this.#resume()
+      if (this.input.IS_PAUSE) this.#resume()
       else this.#pause()
     }
     if (!PAUSE) {
-      this.#inputKeys.gamepad.PAUSE_PRESSED = false
+      this.input.gamepad.PAUSE_PRESSED = false
     }
 
     /**
      * Inputs
      */
-    if (!this.keys.IS_PAUSE) {
+    if (!this.input.IS_PAUSE) {
       // Sticks — umbral para evitar drift
       const DEAD_ZONE = 0.1
       const lx = Math.abs(gamepad.axes[0]) > DEAD_ZONE ? gamepad.axes[0] : 0
@@ -336,17 +300,17 @@ class GameEngine extends GameInput {
       const ry = Math.abs(gamepad.axes[3]) > DEAD_ZONE ? gamepad.axes[3] : 0
 
       // Movimiento (stick izquierdo)
-      this.#inputKeys.gamepad.LEFT = lx < 0 ? -lx : 0
-      this.#inputKeys.gamepad.RIGHT = lx > 0 ? lx : 0
-      this.#inputKeys.gamepad.UP = ly < 0 ? -ly : 0
-      this.#inputKeys.gamepad.DOWN = ly > 0 ? ly : 0
+      this.input.gamepad.LEFT = lx < 0 ? -lx : 0
+      this.input.gamepad.RIGHT = lx > 0 ? lx : 0
+      this.input.gamepad.UP = ly < 0 ? -ly : 0
+      this.input.gamepad.DOWN = ly > 0 ? ly : 0
 
       // Cámara (stick derecho)
-      this.keys.AZIMUTH -= rx * 0.05
-      this.keys.POLAR -= ry * 0.05
-      this.keys.POLAR = Math.max(
+      this.input.AZIMUTH -= rx * 0.05
+      this.input.POLAR -= ry * 0.05
+      this.input.POLAR = Math.max(
         MathUtils.degToRad(30),
-        Math.min(MathUtils.degToRad(60), this.keys.POLAR)
+        Math.min(MathUtils.degToRad(60), this.input.POLAR)
       )
     }
 
@@ -368,8 +332,8 @@ class GameEngine extends GameInput {
   }
 
   #mergeInputs() {
-    const { keyboard: kb, touchpad: tp, gamepad: gp } = this.#inputKeys
-    const keys = this.keys
+    const { keyboard: kb, touchpad: tp, gamepad: gp } = this.input
+    const keys = this.input
 
     keys.UP = Math.max(kb.UP, tp.UP, gp.UP)
     keys.DOWN = Math.max(kb.DOWN, tp.DOWN, gp.DOWN)
@@ -383,7 +347,7 @@ class GameEngine extends GameInput {
 
   #pause() {
     this.#ui.winPause.style.display = 'block'
-    this.keys.IS_PAUSE = true
+    this.input.IS_PAUSE = true
 
     this.#ui.btnContinue.disabled = true
     setTimeout(() => (this.#ui.btnContinue.disabled = false), 1000)
@@ -392,7 +356,7 @@ class GameEngine extends GameInput {
   #resume() {
     this.canvas.requestPointerLock()
     this.#ui.winPause.style.display = 'none'
-    this.keys.IS_PAUSE = false
+    this.input.IS_PAUSE = false
   }
 
   #log(values) {

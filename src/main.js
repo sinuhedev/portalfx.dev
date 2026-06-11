@@ -21,7 +21,7 @@ class Game extends GameEngine {
   }
 
   onAnimate(delta) {
-    this.#player.update(delta, this.keys, this.camera)
+    this.#player.update(delta, this.input, this.camera)
 
     this.renderer.render(this.#scene, this.camera)
   }
