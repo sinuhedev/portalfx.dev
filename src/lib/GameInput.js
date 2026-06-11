@@ -83,6 +83,12 @@ class GameInput {
         case 'ShiftLeft':
           this.#keyboard.SHIFT = type === 'keydown' ? 0.3 : 0
           break
+        // case 'Escape':
+        //   if (this.IS_PAUSE && type === 'keydown') {
+        //     this.IS_PAUSE = false
+        //     this.#canvas.requestPointerLock()
+        //   }
+        //   break
       }
 
       this.#mergeInputs()
@@ -110,7 +116,7 @@ class GameInput {
     })
 
     document.addEventListener('pointerlockchange', () => {
-      this.IS_PAUSE = document.pointerLockElement !== this.#canvas
+      if (document.pointerLockElement !== this.#canvas) this.IS_PAUSE = true
     })
   }
 
@@ -218,10 +224,10 @@ class GameInput {
         this.#gamepad.PAUSE_PRESSED = true
 
         if (this.IS_PAUSE) {
-          this.#canvas.requestPointerLock()
+          // this.#canvas.requestPointerLock()
           this.IS_PAUSE = false
         } else {
-          document.exitPointerLock()
+          // document.exitPointerLock()
           this.IS_PAUSE = true
         }
       }
@@ -267,6 +273,7 @@ class GameInput {
 
   resume() {
     this.IS_PAUSE = false
+    this.#canvas.requestPointerLock()
   }
 
   #mergeInputs() {

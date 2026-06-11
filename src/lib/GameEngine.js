@@ -5,11 +5,6 @@ import GameUI from './GameUI'
 class GameEngine {
   #animationId
 
-  #ui = {
-    winPause: null,
-    btnContinue: null
-  }
-
   input
 
   canvas
@@ -17,8 +12,8 @@ class GameEngine {
   camera
 
   constructor(canvas) {
-    this.input = new GameInput(canvas)
     this.ui = new GameUI()
+    this.input = new GameInput(canvas)
 
     this.canvas = canvas
     this.renderer = new WebGLRenderer({ canvas })
@@ -29,12 +24,17 @@ class GameEngine {
     await this.onInit()
 
     // this.#menu()
-    this.#gui()
+    // this.#gui()
     this.#resize()
 
     this.input.keyboard()
-    this.input.touchpad()
     this.input.gamepad()
+    this.input.touchpad()
+
+    this.ui.onTouchpadEvents(
+      () => this.input.pause(),
+      () => this.input.resume()
+    )
 
     let lastTime = 0
     const animate = (time) => {
@@ -48,7 +48,12 @@ class GameEngine {
         input: this.input
       })
 
-      if (this.input.IS_PAUSE) return
+      if (this.input.IS_PAUSE) {
+        this.ui.pause()
+        return
+      } else {
+        this.ui.resume()
+      }
 
       this.onAnimate(delta)
     }
@@ -69,12 +74,6 @@ class GameEngine {
       this.renderer.setSize(clientWidth, clientHeight)
       this.camera.aspect = clientWidth / clientHeight
       this.camera.updateProjectionMatrix()
-
-      const IS_MOBILE = window.matchMedia('(pointer: coarse)').matches
-
-      if (IS_MOBILE) {
-      } else {
-      }
     }
 
     onResize()
@@ -99,25 +98,6 @@ class GameEngine {
       }
 
       winMenu.remove()
-    })
-  }
-
-  #gui() {
-    this.#ui.winPause = document.getElementById('pause')
-    this.#ui.btnContinue = document.getElementById('continue')
-    this.#ui.btnContinue.addEventListener('click', () => {
-      this.canvas.requestPointerLock()
-      this.#ui.winPause.style.display = 'none'
-      this.input.resume()
-    })
-
-    const btnLogo = document.getElementById('logo')
-    btnLogo.addEventListener('click', async () => {
-      this.#ui.winPause.style.display = 'block'
-      this.input.pause()
-
-      this.#ui.btnContinue.disabled = true
-      setTimeout(() => (this.#ui.btnContinue.disabled = false), 1000)
     })
   }
 
