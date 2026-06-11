@@ -24,17 +24,27 @@ class GameEngine {
     await this.onInit()
 
     // this.#menu()
-    // this.#gui()
     this.#resize()
 
     this.input.keyboard()
     this.input.gamepad()
     this.input.touchpad()
 
-    this.ui.onTouchpadEvents(
-      () => this.input.pause(),
-      () => this.input.resume()
-    )
+    this.input.addEventListener('pause', ({ detail: { pause } }) => {
+      if (pause) {
+        this.ui.pause()
+      } else {
+        this.ui.resume()
+      }
+    })
+
+    this.ui.addEventListener('pause', ({ detail: { pause } }) => {
+      if (pause) {
+        this.input.pause()
+      } else {
+        this.input.resume()
+      }
+    })
 
     let lastTime = 0
     const animate = (time) => {
@@ -48,12 +58,7 @@ class GameEngine {
         input: this.input
       })
 
-      if (this.input.IS_PAUSE) {
-        this.ui.pause()
-        return
-      } else {
-        this.ui.resume()
-      }
+      if (this.input.IS_PAUSE) return
 
       this.onAnimate(delta)
     }

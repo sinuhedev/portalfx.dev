@@ -1,10 +1,11 @@
 import { MathUtils } from 'three'
 
-class GameInput {
+class GameInput extends EventTarget {
   UP = 0
   DOWN = 0
   LEFT = 0
   RIGHT = 0
+  IS_MOBILE = false
   IS_PAUSE = false
   IS_MOVE = false
   IS_RUN = false
@@ -37,6 +38,7 @@ class GameInput {
   }
 
   constructor(canvas) {
+    super()
     this.#canvas = canvas
     this.#ignoreEvents()
     this.#resize()
@@ -49,9 +51,9 @@ class GameInput {
 
   #resize() {
     const onResize = () => {
-      const IS_MOBILE = window.matchMedia('(pointer: coarse)').matches
+      this.IS_MOBILE = window.matchMedia('(pointer: coarse)').matches
 
-      if (IS_MOBILE) {
+      if (this.IS_MOBILE) {
         this.SENSITIVITY = 80
       } else {
         this.SENSITIVITY = 800
@@ -83,12 +85,6 @@ class GameInput {
         case 'ShiftLeft':
           this.#keyboard.SHIFT = type === 'keydown' ? 0.3 : 0
           break
-        // case 'Escape':
-        //   if (this.IS_PAUSE && type === 'keydown') {
-        //     this.IS_PAUSE = false
-        //     this.#canvas.requestPointerLock()
-        //   }
-        //   break
       }
 
       this.#mergeInputs()
@@ -116,7 +112,13 @@ class GameInput {
     })
 
     document.addEventListener('pointerlockchange', () => {
-      if (document.pointerLockElement !== this.#canvas) this.IS_PAUSE = true
+      if (document.pointerLockElement !== this.#canvas) {
+        this.IS_PAUSE = true
+
+        this.dispatchEvent(
+          new CustomEvent('pause', { detail: { pause: true } })
+        )
+      }
     })
   }
 
@@ -230,6 +232,10 @@ class GameInput {
           // document.exitPointerLock()
           this.IS_PAUSE = true
         }
+
+        this.dispatchEvent(
+          new CustomEvent('pause', { detail: { pause: this.IS_PAUSE } })
+        )
       }
       if (!PAUSE) {
         this.#gamepad.PAUSE_PRESSED = false
@@ -273,7 +279,7 @@ class GameInput {
 
   resume() {
     this.IS_PAUSE = false
-    this.#canvas.requestPointerLock()
+    if (!this.IS_MOBILE) this.#canvas.requestPointerLock()
   }
 
   #mergeInputs() {

@@ -1,10 +1,12 @@
-class GameUI {
+class GameUI extends EventTarget {
   #BTN_LOGO = document.getElementById('logo')
   #BTN_CONTINUE = document.getElementById('continue')
   #UI_PAUSE = document.getElementById('pause')
 
   constructor() {
+    super()
     this.#resize()
+    this.#events()
   }
 
   #resize() {
@@ -21,25 +23,29 @@ class GameUI {
     window.addEventListener('resize', onResize)
   }
 
+  #events() {
+    this.#BTN_LOGO.addEventListener('click', () => {
+      this.#UI_PAUSE.style.display = 'block'
+      this.#BTN_CONTINUE.disabled = false
+
+      this.dispatchEvent(new CustomEvent('pause', { detail: { pause: true } }))
+    })
+
+    this.#BTN_CONTINUE.addEventListener('click', () => {
+      this.#UI_PAUSE.style.display = 'none'
+
+      this.dispatchEvent(new CustomEvent('pause', { detail: { pause: false } }))
+    })
+  }
+
   pause() {
     this.#UI_PAUSE.style.display = 'block'
+    this.#BTN_CONTINUE.disabled = true
     setTimeout(() => (this.#BTN_CONTINUE.disabled = false), 1000)
   }
 
   resume() {
     this.#UI_PAUSE.style.display = 'none'
-  }
-
-  onTouchpadEvents(pause, resume) {
-    this.#BTN_LOGO.addEventListener('click', () => {
-      this.#UI_PAUSE.style.display = 'block'
-      pause()
-    })
-
-    this.#BTN_CONTINUE.addEventListener('click', () => {
-      this.#UI_PAUSE.style.display = 'none'
-      resume()
-    })
   }
 }
 
