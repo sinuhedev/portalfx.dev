@@ -1,6 +1,6 @@
 import { MathUtils } from 'three'
 
-class GameInput extends EventTarget {
+class GameInput {
   UP = 0
   DOWN = 0
   LEFT = 0
@@ -13,6 +13,10 @@ class GameInput extends EventTarget {
   POLAR = MathUtils.degToRad(70) // angulo vertical
   SENSITIVITY = 0
   CAMERA_RADIUS = 3
+
+  #BTN_LOGO = document.getElementById('logo')
+  #BTN_CONTINUE = document.getElementById('continue')
+  #UI_PAUSE = document.getElementById('pause')
 
   #canvas
 
@@ -38,13 +42,10 @@ class GameInput extends EventTarget {
   }
 
   constructor(canvas) {
-    super()
     this.#canvas = canvas
-    this.#ignoreEvents()
     this.#resize()
-  }
 
-  #ignoreEvents() {
+    // ignoreEvents
     window.addEventListener('contextmenu', (e) => e.preventDefault())
     document.addEventListener('gesturestart', (e) => e.preventDefault())
   }
@@ -55,8 +56,10 @@ class GameInput extends EventTarget {
 
       if (this.IS_MOBILE) {
         this.SENSITIVITY = 80
+        this.#BTN_LOGO.style.display = 'block'
       } else {
         this.SENSITIVITY = 800
+        this.#BTN_LOGO.style.display = 'none'
       }
     }
     onResize()
@@ -115,9 +118,9 @@ class GameInput extends EventTarget {
       if (document.pointerLockElement !== this.#canvas) {
         this.IS_PAUSE = true
 
-        this.dispatchEvent(
-          new CustomEvent('pause', { detail: { pause: true } })
-        )
+        this.#UI_PAUSE.style.display = 'block'
+        this.#BTN_CONTINUE.disabled = true
+        setTimeout(() => (this.#BTN_CONTINUE.disabled = false), 1000)
       }
     })
   }
@@ -208,6 +211,21 @@ class GameInput extends EventTarget {
       pointers.delete(e.pointerId)
       recalculate()
     })
+
+    /**
+     * touchpad buttons
+     */
+
+    this.#BTN_LOGO.addEventListener('click', () => {
+      this.#UI_PAUSE.style.display = 'block'
+      this.#BTN_CONTINUE.disabled = false
+      this.IS_PAUSE = true
+    })
+
+    this.#BTN_CONTINUE.addEventListener('click', () => {
+      this.#UI_PAUSE.style.display = 'none'
+      this.IS_PAUSE = false
+    })
   }
 
   gamepad() {
@@ -228,14 +246,16 @@ class GameInput extends EventTarget {
         if (this.IS_PAUSE) {
           // this.#canvas.requestPointerLock()
           this.IS_PAUSE = false
+
+          this.#UI_PAUSE.style.display = 'none'
         } else {
           // document.exitPointerLock()
           this.IS_PAUSE = true
-        }
 
-        this.dispatchEvent(
-          new CustomEvent('pause', { detail: { pause: this.IS_PAUSE } })
-        )
+          this.#UI_PAUSE.style.display = 'block'
+          this.#BTN_CONTINUE.disabled = true
+          setTimeout(() => (this.#BTN_CONTINUE.disabled = false), 1000)
+        }
       }
       if (!PAUSE) {
         this.#gamepad.PAUSE_PRESSED = false
@@ -273,14 +293,14 @@ class GameInput extends EventTarget {
     gamepadLoop()
   }
 
-  pause() {
-    this.IS_PAUSE = true
-  }
+  // pause() {
+  //   this.IS_PAUSE = true
+  // }
 
-  resume() {
-    this.IS_PAUSE = false
-    if (!this.IS_MOBILE) this.#canvas.requestPointerLock()
-  }
+  // resume() {
+  //   this.IS_PAUSE = false
+  //   if (!this.IS_MOBILE) this.#canvas.requestPointerLock()
+  // }
 
   #mergeInputs() {
     this.UP = Math.max(this.#keyboard.UP, this.#touchpad.UP, this.#gamepad.UP)

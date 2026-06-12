@@ -30,22 +30,6 @@ class GameEngine {
     this.input.gamepad()
     this.input.touchpad()
 
-    this.input.addEventListener('pause', ({ detail: { pause } }) => {
-      if (pause) {
-        this.ui.pause()
-      } else {
-        this.ui.resume()
-      }
-    })
-
-    this.ui.addEventListener('pause', ({ detail: { pause } }) => {
-      if (pause) {
-        this.input.pause()
-      } else {
-        this.input.resume()
-      }
-    })
-
     let lastTime = 0
     const animate = (time) => {
       const delta = (time - lastTime) / 1000
