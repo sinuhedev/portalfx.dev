@@ -1,9 +1,9 @@
 import { onResize } from './Util'
 
 class UI {
-  btnLogo = document.getElementById('logo')
-  btnContinue = document.getElementById('continue')
-  winPause = document.getElementById('pause')
+  winPause = document.getElementById('win-pause')
+  btnLogo = document.getElementById('btn-logo')
+  btnContinue = document.getElementById('btn-continue')
 
   constructor() {
     this.#resize()

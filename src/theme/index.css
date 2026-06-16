@@ -1,4 +1,5 @@
 @import "./util.css";
+@import "./components.css";
 
 :root {
   --primary-color: #505c74;
@@ -16,6 +17,9 @@ body {
   background-color: var(--bg-color);
 }
 
+/**
+ * Scrollbar
+ */
 @media (pointer: fine) {
   ::-webkit-scrollbar {
     width: 16px;
@@ -37,75 +41,5 @@ body {
   ::-webkit-scrollbar-track,
   ::-webkit-scrollbar-corner {
     background-color: transparent;
-  }
-}
-
-#logo {
-  position: absolute;
-  z-index: 1;
-  margin: 5px;
-  width: 64px;
-  height: 64px;
-  background-color: transparent;
-  border-color: transparent;
-}
-
-button {
-  height: 80px;
-  width: 200px;
-  border-radius: 20px;
-  border-color: transparent;
-  font-size: 20px;
-  cursor: pointer;
-  background-color: #30475fa4;
-  color: #9494b4;
-
-  &:disabled {
-    background-color: #6d859ea4;
-    color: gray;
-    cursor: not-allowed;
-  }
-}
-
-#pause {
-  position: absolute;
-  z-index: 2;
-  background-color: #27292ba4;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 20px;
-
-  section {
-    height: 100%;
-    background-color: #1a222ea4;
-    border-radius: 30px;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-}
-
-#log {
-  position: absolute;
-  z-index: 1;
-  overflow: auto;
-  top: 5px;
-  right: 5px;
-  bottom: 5px;
-  padding-left: 10px;
-  background-color: var(--bg-color);
-  color: var(--text-color);
-  font-weight: bold;
-  border-radius: 14px;
-
-  font-size: 12px;
-  width: 220px;
-
-  @media (max-width: 1024px) {
-    font-size: 7px;
-    width: 130px;
   }
 }

@@ -9,7 +9,9 @@ function onResize(callback) {
 }
 
 function log(values) {
-  document.getElementById('log-content').textContent = JSON.stringify(
+  const winLog = document.querySelector('#win-log pre')
+
+  winLog.textContent = JSON.stringify(
     values,
     (_, value) =>
       typeof value === 'number' ? parseFloat(value.toFixed(3)) : value,
