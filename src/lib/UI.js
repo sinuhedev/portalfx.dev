@@ -1,4 +1,4 @@
-import { isMobile } from './Util'
+import { onResize } from './Util'
 
 class UI {
   btnLogo = document.getElementById('logo')
@@ -10,15 +10,13 @@ class UI {
   }
 
   #resize() {
-    const onResize = () => {
-      if (isMobile()) {
+    onResize((isMobile) => {
+      if (isMobile) {
         this.btnLogo.style.display = 'block'
       } else {
         this.btnLogo.style.display = 'none'
       }
-    }
-    onResize()
-    window.addEventListener('resize', onResize)
+    })
   }
 }
 

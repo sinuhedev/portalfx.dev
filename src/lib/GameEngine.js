@@ -1,6 +1,7 @@
 import { PerspectiveCamera, WebGLRenderer } from 'three'
 import Input from './Input'
 import UI from './UI'
+import { log, onResize } from './Util'
 
 class GameEngine {
   #animationId
@@ -23,7 +24,6 @@ class GameEngine {
   async start() {
     await this.onInit()
 
-    // this.#menu()
     this.#resize()
 
     this.input.keyboard()
@@ -38,8 +38,7 @@ class GameEngine {
       this.#animationId = window.requestAnimationFrame(animate)
       lastTime = time
 
-      this.#log({
-        isMobile: this.isMobile,
+      log({
         input: this.input
       })
 
@@ -56,7 +55,7 @@ class GameEngine {
     const width = this.canvas.style.width || '100%'
     const height = this.canvas.style.height || '100%'
 
-    const onResize = () => {
+    onResize(() => {
       this.canvas.style.width = width
       this.canvas.style.height = height
 
@@ -64,40 +63,7 @@ class GameEngine {
       this.renderer.setSize(clientWidth, clientHeight)
       this.camera.aspect = clientWidth / clientHeight
       this.camera.updateProjectionMatrix()
-    }
-
-    onResize()
-    window.addEventListener('resize', onResize)
-  }
-
-  #menu() {
-    const btnStart = document.getElementById('start')
-    const winMenu = document.getElementById('menu')
-
-    btnStart.addEventListener('click', async () => {
-      // await document.documentElement.requestFullscreen()
-
-      if (this.isMobile) {
-        try {
-          await screen.orientation.lock('landscape')
-        } catch (err) {
-          console.error(err)
-        }
-      } else {
-        this.canvas.requestPointerLock()
-      }
-
-      winMenu.remove()
     })
-  }
-
-  #log(values) {
-    document.getElementById('log-content').textContent = JSON.stringify(
-      values,
-      (_, value) =>
-        typeof value === 'number' ? parseFloat(value.toFixed(3)) : value,
-      2
-    )
   }
 
   #dispose() {

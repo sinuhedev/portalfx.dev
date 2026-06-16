@@ -1,5 +1,5 @@
 import { MathUtils } from 'three'
-import { isMobile } from './Util'
+import { isMobile, onResize } from './Util'
 
 class Input {
   UP = 0
@@ -50,15 +50,13 @@ class Input {
   }
 
   #resize() {
-    const onResize = () => {
-      if (isMobile()) {
+    onResize((isMobile) => {
+      if (isMobile) {
         this.SENSITIVITY = 80
       } else {
         this.SENSITIVITY = 800
       }
-    }
-    onResize()
-    window.addEventListener('resize', onResize)
+    })
   }
 
   keyboard() {

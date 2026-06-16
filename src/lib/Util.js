@@ -8,4 +8,13 @@ function onResize(callback) {
   window.addEventListener('resize', resize)
 }
 
-export { isMobile, onResize }
+function log(values) {
+  document.getElementById('log-content').textContent = JSON.stringify(
+    values,
+    (_, value) =>
+      typeof value === 'number' ? parseFloat(value.toFixed(3)) : value,
+    2
+  )
+}
+
+export { isMobile, log, onResize }
