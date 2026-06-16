@@ -7,8 +7,8 @@ class Game extends GameEngine {
   #scene
   #player
 
-  constructor() {
-    super(document.querySelector('canvas'))
+  constructor(canvas) {
+    super(canvas)
     this.#player = new Player()
   }
 
@@ -29,5 +29,6 @@ class Game extends GameEngine {
   onDispose() {}
 }
 
-const game = new Game()
+const canvas = document.querySelector('canvas')
+const game = new Game(canvas)
 game.start()
