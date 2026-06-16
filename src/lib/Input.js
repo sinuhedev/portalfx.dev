@@ -1,6 +1,6 @@
 import { MathUtils } from 'three'
 
-class GameInput {
+class Input {
   UP = 0
   DOWN = 0
   LEFT = 0
@@ -314,4 +314,4 @@ class GameInput {
   }
 }
 
-export default GameInput
+export default Input

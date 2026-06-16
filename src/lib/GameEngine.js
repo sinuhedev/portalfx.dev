@@ -1,6 +1,6 @@
 import { PerspectiveCamera, WebGLRenderer } from 'three'
-import GameInput from './GameInput'
-import GameUI from './GameUI'
+import Input from './Input'
+import UI from './UI'
 
 class GameEngine {
   #animationId
@@ -12,8 +12,8 @@ class GameEngine {
   camera
 
   constructor(canvas) {
-    this.ui = new GameUI()
-    this.input = new GameInput(canvas, this.ui)
+    this.ui = new UI()
+    this.input = new Input(canvas, this.ui)
 
     this.canvas = canvas
     this.renderer = new WebGLRenderer({ canvas })

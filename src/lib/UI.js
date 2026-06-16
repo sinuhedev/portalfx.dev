@@ -1,4 +1,4 @@
-class GameUI {
+class UI {
   btnLogo = document.getElementById('logo')
   btnContinue = document.getElementById('continue')
   winPause = document.getElementById('pause')
@@ -22,4 +22,4 @@ class GameUI {
   }
 }
 
-export default GameUI
+export default UI
