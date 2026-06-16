@@ -218,26 +218,20 @@ class Input {
        */
       const PAUSE = gamepad.buttons[16].pressed
 
-      if (PAUSE && !this.#gamepad.PAUSE_PRESSED) {
-        this.#gamepad.PAUSE_PRESSED = true
+      if (PAUSE) {
+        if (!this.#gamepad.PAUSE_PRESSED) {
+          if (this.IS_PAUSE) {
+            this.#ui.winPause.style.display = 'none'
+          } else {
+            this.#ui.winPause.style.display = 'block'
+            this.#ui.btnContinue.disabled = true
+            setTimeout(() => (this.#ui.btnContinue.disabled = false), 1000)
+          }
 
-        if (this.IS_PAUSE) {
-          // this.#canvas.requestPointerLock()
-          this.IS_PAUSE = false
-
-          this.#ui.winPause.style.display = 'none'
-        } else {
-          // document.exitPointerLock()
-          this.IS_PAUSE = true
-
-          this.#ui.winPause.style.display = 'block'
-          this.#ui.btnContinue.disabled = true
-          setTimeout(() => (this.#ui.btnContinue.disabled = false), 1000)
+          this.IS_PAUSE = !this.IS_PAUSE
+          this.#gamepad.PAUSE_PRESSED = true
         }
-      }
-      if (!PAUSE) {
-        this.#gamepad.PAUSE_PRESSED = false
-      }
+      } else this.#gamepad.PAUSE_PRESSED = false
 
       /**
        * Inputs
