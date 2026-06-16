@@ -1,3 +1,5 @@
+import { isMobile } from './Util'
+
 class UI {
   btnLogo = document.getElementById('logo')
   btnContinue = document.getElementById('continue')
@@ -9,9 +11,7 @@ class UI {
 
   #resize() {
     const onResize = () => {
-      this.IS_MOBILE = window.matchMedia('(pointer: coarse)').matches
-
-      if (this.IS_MOBILE) {
+      if (isMobile()) {
         this.btnLogo.style.display = 'block'
       } else {
         this.btnLogo.style.display = 'none'

@@ -1,11 +1,11 @@
 import { MathUtils } from 'three'
+import { isMobile } from './Util'
 
 class Input {
   UP = 0
   DOWN = 0
   LEFT = 0
   RIGHT = 0
-  IS_MOBILE = false
   IS_PAUSE = false
   IS_MOVE = false
   IS_RUN = false
@@ -51,9 +51,7 @@ class Input {
 
   #resize() {
     const onResize = () => {
-      this.IS_MOBILE = window.matchMedia('(pointer: coarse)').matches
-
-      if (this.IS_MOBILE) {
+      if (isMobile()) {
         this.SENSITIVITY = 80
       } else {
         this.SENSITIVITY = 800
@@ -286,7 +284,7 @@ class Input {
       this.#ui.winPause.style.display = 'none'
       this.IS_PAUSE = false
 
-      if (!this.IS_MOBILE) this.#canvas.requestPointerLock()
+      if (!isMobile()) this.#canvas.requestPointerLock()
     })
   }
 
