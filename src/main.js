@@ -16,7 +16,6 @@ class Game extends GameEngine {
     await this.#player.loadAsync()
 
     this.#scene = new LevelScene()
-    this.camera.position.z = 5
     this.#scene.add(this.#player)
   }
 
