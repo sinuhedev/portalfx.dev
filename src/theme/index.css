@@ -51,6 +51,7 @@ button {
 
 #logo {
   position: absolute;
+  display: none;
   z-index: 1;
   margin: 5px;
   width: 64px;

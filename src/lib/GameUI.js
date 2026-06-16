@@ -1,11 +1,21 @@
 class GameUI {
+  btnLogo = document.getElementById('logo')
+  btnContinue = document.getElementById('continue')
+  winPause = document.getElementById('pause')
+
   constructor() {
     this.#resize()
   }
 
   #resize() {
     const onResize = () => {
-      const IS_MOBILE = window.matchMedia('(pointer: coarse)').matches
+      this.IS_MOBILE = window.matchMedia('(pointer: coarse)').matches
+
+      if (this.IS_MOBILE) {
+        this.btnLogo.style.display = 'block'
+      } else {
+        this.btnLogo.style.display = 'none'
+      }
     }
     onResize()
     window.addEventListener('resize', onResize)

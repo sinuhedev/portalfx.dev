@@ -14,11 +14,8 @@ class GameInput {
   SENSITIVITY = 0
   CAMERA_RADIUS = 3
 
-  #BTN_LOGO = document.getElementById('logo')
-  #BTN_CONTINUE = document.getElementById('continue')
-  #UI_PAUSE = document.getElementById('pause')
-
   #canvas
+  #ui
 
   #keyboard = {
     UP: 0,
@@ -41,8 +38,10 @@ class GameInput {
     PAUSE_PRESSED: false
   }
 
-  constructor(canvas) {
+  constructor(canvas, ui) {
     this.#canvas = canvas
+    this.#ui = ui
+
     this.#resize()
 
     // ignoreEvents
@@ -56,10 +55,8 @@ class GameInput {
 
       if (this.IS_MOBILE) {
         this.SENSITIVITY = 80
-        this.#BTN_LOGO.style.display = 'block'
       } else {
         this.SENSITIVITY = 800
-        this.#BTN_LOGO.style.display = 'none'
       }
     }
     onResize()
@@ -118,9 +115,9 @@ class GameInput {
       if (document.pointerLockElement !== this.#canvas) {
         this.IS_PAUSE = true
 
-        this.#UI_PAUSE.style.display = 'block'
-        this.#BTN_CONTINUE.disabled = true
-        setTimeout(() => (this.#BTN_CONTINUE.disabled = false), 1000)
+        this.#ui.winPause.style.display = 'block'
+        this.#ui.btnContinue.disabled = true
+        setTimeout(() => (this.#ui.btnContinue.disabled = false), 1000)
       }
     })
   }
@@ -232,14 +229,14 @@ class GameInput {
           // this.#canvas.requestPointerLock()
           this.IS_PAUSE = false
 
-          this.#UI_PAUSE.style.display = 'none'
+          this.#ui.winPause.style.display = 'none'
         } else {
           // document.exitPointerLock()
           this.IS_PAUSE = true
 
-          this.#UI_PAUSE.style.display = 'block'
-          this.#BTN_CONTINUE.disabled = true
-          setTimeout(() => (this.#BTN_CONTINUE.disabled = false), 1000)
+          this.#ui.winPause.style.display = 'block'
+          this.#ui.btnContinue.disabled = true
+          setTimeout(() => (this.#ui.btnContinue.disabled = false), 1000)
         }
       }
       if (!PAUSE) {
@@ -279,14 +276,14 @@ class GameInput {
   }
 
   buttons() {
-    this.#BTN_LOGO.addEventListener('click', () => {
-      this.#UI_PAUSE.style.display = 'block'
-      this.#BTN_CONTINUE.disabled = false
+    this.#ui.btnLogo.addEventListener('click', () => {
+      this.#ui.winPause.style.display = 'block'
+      this.#ui.btnContinue.disabled = false
       this.IS_PAUSE = true
     })
 
-    this.#BTN_CONTINUE.addEventListener('click', () => {
-      this.#UI_PAUSE.style.display = 'none'
+    this.#ui.btnContinue.addEventListener('click', () => {
+      this.#ui.winPause.style.display = 'none'
       this.IS_PAUSE = false
 
       if (!this.IS_MOBILE) this.#canvas.requestPointerLock()

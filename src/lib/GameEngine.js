@@ -13,7 +13,7 @@ class GameEngine {
 
   constructor(canvas) {
     this.ui = new GameUI()
-    this.input = new GameInput(canvas)
+    this.input = new GameInput(canvas, this.ui)
 
     this.canvas = canvas
     this.renderer = new WebGLRenderer({ canvas })
