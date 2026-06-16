@@ -28,7 +28,7 @@ button {
 #win-pause {
   position: absolute;
   z-index: 2;
-  background-color: #27292ba4;
+  background-color: color-mix(in srgb, black, transparent 50%);
   top: 0;
   bottom: 0;
   left: 0;
