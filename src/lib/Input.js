@@ -13,30 +13,29 @@ class Input {
   POLAR = MathUtils.degToRad(70) // angulo vertical
   SENSITIVITY = 0
   CAMERA_RADIUS = 3
-
-  #canvas
-  #ui
-
-  #keyboard = {
+  KEYBOARD = {
     UP: 0,
     RIGHT: 0,
     DOWN: 0,
     LEFT: 0,
     SHIFT: 0
   }
-  #touchpad = {
+  TOUCHPAD = {
     UP: 0,
     RIGHT: 0,
     DOWN: 0,
     LEFT: 0
   }
-  #gamepad = {
+  GAMEPAD = {
     UP: 0,
     RIGHT: 0,
     DOWN: 0,
     LEFT: 0,
     PAUSE_PRESSED: false
   }
+
+  #canvas
+  #ui
 
   constructor(canvas, ui) {
     this.#canvas = canvas
@@ -63,23 +62,23 @@ class Input {
     // Key down and up
     const keyDownUpEventListener = (evt) => {
       const { code, type } = evt
-      const keyType = type === 'keydown' ? 0.7 + this.#keyboard.SHIFT : 0
+      const keyType = type === 'keydown' ? 0.7 + this.KEYBOARD.SHIFT : 0
 
       switch (code) {
         case 'KeyW':
-          this.#keyboard.UP = keyType
+          this.KEYBOARD.UP = keyType
           break
         case 'KeyS':
-          this.#keyboard.DOWN = keyType
+          this.KEYBOARD.DOWN = keyType
           break
         case 'KeyA':
-          this.#keyboard.LEFT = keyType
+          this.KEYBOARD.LEFT = keyType
           break
         case 'KeyD':
-          this.#keyboard.RIGHT = keyType
+          this.KEYBOARD.RIGHT = keyType
           break
         case 'ShiftLeft':
-          this.#keyboard.SHIFT = type === 'keydown' ? 0.3 : 0
+          this.KEYBOARD.SHIFT = type === 'keydown' ? 0.3 : 0
           break
       }
 
@@ -124,18 +123,18 @@ class Input {
     this.#canvas.style.touchAction = 'none'
 
     const recalculate = () => {
-      this.#touchpad.LEFT = 0
-      this.#touchpad.RIGHT = 0
-      this.#touchpad.UP = 0
-      this.#touchpad.DOWN = 0
+      this.TOUCHPAD.LEFT = 0
+      this.TOUCHPAD.RIGHT = 0
+      this.TOUCHPAD.UP = 0
+      this.TOUCHPAD.DOWN = 0
 
       for (const [, pointer] of pointers) {
         if (pointer.side !== 'left') continue
 
-        this.#touchpad.LEFT += pointer.LEFT ?? 0
-        this.#touchpad.RIGHT += pointer.RIGHT ?? 0
-        this.#touchpad.UP += pointer.UP ?? 0
-        this.#touchpad.DOWN += pointer.DOWN ?? 0
+        this.TOUCHPAD.LEFT += pointer.LEFT ?? 0
+        this.TOUCHPAD.RIGHT += pointer.RIGHT ?? 0
+        this.TOUCHPAD.UP += pointer.UP ?? 0
+        this.TOUCHPAD.DOWN += pointer.DOWN ?? 0
       }
 
       this.#mergeInputs()
@@ -219,7 +218,7 @@ class Input {
       const PAUSE = gamepad.buttons[16].pressed
 
       if (PAUSE) {
-        if (!this.#gamepad.PAUSE_PRESSED) {
+        if (!this.GAMEPAD.PAUSE_PRESSED) {
           if (this.IS_PAUSE) {
             this.#ui.winPause.style.display = 'none'
           } else {
@@ -229,9 +228,9 @@ class Input {
           }
 
           this.IS_PAUSE = !this.IS_PAUSE
-          this.#gamepad.PAUSE_PRESSED = true
+          this.GAMEPAD.PAUSE_PRESSED = true
         }
-      } else this.#gamepad.PAUSE_PRESSED = false
+      } else this.GAMEPAD.PAUSE_PRESSED = false
 
       /**
        * Inputs
@@ -245,10 +244,10 @@ class Input {
         const ry = Math.abs(gamepad.axes[3]) > DEAD_ZONE ? gamepad.axes[3] : 0
 
         // Movimiento (stick izquierdo)
-        this.#gamepad.LEFT = lx < 0 ? -lx : 0
-        this.#gamepad.RIGHT = lx > 0 ? lx : 0
-        this.#gamepad.UP = ly < 0 ? -ly : 0
-        this.#gamepad.DOWN = ly > 0 ? ly : 0
+        this.GAMEPAD.LEFT = lx < 0 ? -lx : 0
+        this.GAMEPAD.RIGHT = lx > 0 ? lx : 0
+        this.GAMEPAD.UP = ly < 0 ? -ly : 0
+        this.GAMEPAD.DOWN = ly > 0 ? ly : 0
 
         // Cámara (stick derecho)
         this.AZIMUTH -= rx * 0.05
@@ -281,21 +280,21 @@ class Input {
   }
 
   #mergeInputs() {
-    this.UP = Math.max(this.#keyboard.UP, this.#touchpad.UP, this.#gamepad.UP)
+    this.UP = Math.max(this.KEYBOARD.UP, this.TOUCHPAD.UP, this.GAMEPAD.UP)
     this.DOWN = Math.max(
-      this.#keyboard.DOWN,
-      this.#touchpad.DOWN,
-      this.#gamepad.DOWN
+      this.KEYBOARD.DOWN,
+      this.TOUCHPAD.DOWN,
+      this.GAMEPAD.DOWN
     )
     this.LEFT = Math.max(
-      this.#keyboard.LEFT,
-      this.#touchpad.LEFT,
-      this.#gamepad.LEFT
+      this.KEYBOARD.LEFT,
+      this.TOUCHPAD.LEFT,
+      this.GAMEPAD.LEFT
     )
     this.RIGHT = Math.max(
-      this.#keyboard.RIGHT,
-      this.#touchpad.RIGHT,
-      this.#gamepad.RIGHT
+      this.KEYBOARD.RIGHT,
+      this.TOUCHPAD.RIGHT,
+      this.GAMEPAD.RIGHT
     )
 
     const max = Math.max(this.UP, this.DOWN, this.LEFT, this.RIGHT)
