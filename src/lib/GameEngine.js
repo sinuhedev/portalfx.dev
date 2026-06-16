@@ -18,7 +18,6 @@ class GameEngine {
     this.canvas = canvas
     this.renderer = new WebGLRenderer({ canvas })
     this.camera = new PerspectiveCamera(75, 1, 0.1, 1000)
-    this.camera.position.z = 50
   }
 
   async start() {
