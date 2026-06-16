@@ -211,21 +211,6 @@ class GameInput {
       pointers.delete(e.pointerId)
       recalculate()
     })
-
-    /**
-     * touchpad buttons
-     */
-
-    this.#BTN_LOGO.addEventListener('click', () => {
-      this.#UI_PAUSE.style.display = 'block'
-      this.#BTN_CONTINUE.disabled = false
-      this.IS_PAUSE = true
-    })
-
-    this.#BTN_CONTINUE.addEventListener('click', () => {
-      this.#UI_PAUSE.style.display = 'none'
-      this.IS_PAUSE = false
-    })
   }
 
   gamepad() {
@@ -293,14 +278,20 @@ class GameInput {
     gamepadLoop()
   }
 
-  // pause() {
-  //   this.IS_PAUSE = true
-  // }
+  buttons() {
+    this.#BTN_LOGO.addEventListener('click', () => {
+      this.#UI_PAUSE.style.display = 'block'
+      this.#BTN_CONTINUE.disabled = false
+      this.IS_PAUSE = true
+    })
 
-  // resume() {
-  //   this.IS_PAUSE = false
-  //   if (!this.IS_MOBILE) this.#canvas.requestPointerLock()
-  // }
+    this.#BTN_CONTINUE.addEventListener('click', () => {
+      this.#UI_PAUSE.style.display = 'none'
+      this.IS_PAUSE = false
+
+      if (!this.IS_MOBILE) this.#canvas.requestPointerLock()
+    })
+  }
 
   #mergeInputs() {
     this.UP = Math.max(this.#keyboard.UP, this.#touchpad.UP, this.#gamepad.UP)

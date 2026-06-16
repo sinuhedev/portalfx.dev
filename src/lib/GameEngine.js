@@ -17,7 +17,7 @@ class GameEngine {
 
     this.canvas = canvas
     this.renderer = new WebGLRenderer({ canvas })
-    this.camera = new PerspectiveCamera(75, 1, 0.1, 1000)
+    this.camera = new PerspectiveCamera(75, 1, 0.1, 2000)
   }
 
   async start() {
@@ -29,6 +29,7 @@ class GameEngine {
     this.input.keyboard()
     this.input.gamepad()
     this.input.touchpad()
+    this.input.buttons()
 
     let lastTime = 0
     const animate = (time) => {
