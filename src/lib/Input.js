@@ -31,7 +31,7 @@ class Input {
     RIGHT: 0,
     DOWN: 0,
     LEFT: 0,
-    PAUSE: false,
+    PAUSE_PRESSED: false,
     L1: false,
     L2: false,
     R1: false,
@@ -227,23 +227,19 @@ class Input {
       /**
        * Pause
        */
-
       const PAUSE = gamepad.buttons[16].pressed
 
-      if (PAUSE) {
-        if (!this.GAMEPAD.PAUSE) {
-          if (this.IS_PAUSE) {
-            this.#ui.winPause.style.display = 'none'
-          } else {
-            this.#ui.winPause.style.display = 'block'
-            this.#ui.btnContinue.disabled = true
-            setTimeout(() => (this.#ui.btnContinue.disabled = false), 1000)
-          }
+      if (PAUSE && !this.GAMEPAD.PAUSE_PRESSED) {
+        this.IS_PAUSE = !this.IS_PAUSE
+        this.#ui.winPause.style.display = this.IS_PAUSE ? 'block' : 'none'
 
-          this.IS_PAUSE = !this.IS_PAUSE
-          this.GAMEPAD.PAUSE = true
+        if (this.IS_PAUSE) {
+          this.#ui.btnContinue.disabled = true
+          setTimeout(() => (this.#ui.btnContinue.disabled = false), 1000)
         }
-      } else this.GAMEPAD.PAUSE = false
+
+        this.GAMEPAD.PAUSE_PRESSED = true
+      } else if (!PAUSE) this.GAMEPAD.PAUSE_PRESSED = false
 
       if (this.IS_PAUSE) return
 
