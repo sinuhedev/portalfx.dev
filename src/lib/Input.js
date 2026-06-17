@@ -227,7 +227,7 @@ class Input {
       /**
        * Pause
        */
-      const PAUSE = gamepad.buttons[16].pressed
+      const PAUSE = gamepad.buttons[16].pressed || gamepad.buttons[9].pressed
 
       if (PAUSE && !this.GAMEPAD.PAUSE_PRESSED) {
         this.IS_PAUSE = !this.IS_PAUSE
