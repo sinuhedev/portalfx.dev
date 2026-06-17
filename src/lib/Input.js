@@ -217,6 +217,27 @@ class Input {
        */
       const PAUSE = gamepad.buttons[16].pressed
 
+      const LEFT_X = gamepad.axes[0]
+      const LEFT_Y = gamepad.axes[1]
+      const RIGHT_X = gamepad.axes[2]
+      const RIGHT_Y = gamepad.axes[3]
+
+      const L1 = gamepad.buttons[4].pressed
+      const R1 = gamepad.buttons[5].pressed
+
+      const L2 = gamepad.buttons[6].pressed
+      const R2 = gamepad.buttons[7].pressed
+
+      const DPAD_UP = gamepad.buttons[12].pressed
+      const DPAD_DOWN = gamepad.buttons[13].pressed
+      const DPAD_LEFT = gamepad.buttons[14].pressed
+      const DPAD_RIGHT = gamepad.buttons[15].pressed
+
+      const CROSS = gamepad.buttons[0].pressed // X
+      const CIRCLE = gamepad.buttons[1].pressed // O
+      const SQUARE = gamepad.buttons[2].pressed // □
+      const TRIANGLE = gamepad.buttons[3].pressed // △
+
       /**
        * Pause
        */
@@ -244,10 +265,10 @@ class Input {
 
       // Sticks — umbral para evitar drift
       const DEAD_ZONE = 0.1
-      const lx = Math.abs(gamepad.axes[0]) > DEAD_ZONE ? gamepad.axes[0] : 0
-      const ly = Math.abs(gamepad.axes[1]) > DEAD_ZONE ? gamepad.axes[1] : 0
-      const rx = Math.abs(gamepad.axes[2]) > DEAD_ZONE ? gamepad.axes[2] : 0
-      const ry = Math.abs(gamepad.axes[3]) > DEAD_ZONE ? gamepad.axes[3] : 0
+      const lx = Math.abs(LEFT_X) > DEAD_ZONE ? LEFT_X : 0
+      const ly = Math.abs(LEFT_Y) > DEAD_ZONE ? LEFT_Y : 0
+      const rx = Math.abs(RIGHT_X) > DEAD_ZONE ? RIGHT_X : 0
+      const ry = Math.abs(RIGHT_Y) > DEAD_ZONE ? RIGHT_Y : 0
 
       // Movimiento (stick izquierdo)
       this.GAMEPAD.LEFT = lx < 0 ? -lx : 0
