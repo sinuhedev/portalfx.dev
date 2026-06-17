@@ -41,7 +41,9 @@ button {
     height: 100%;
 
     main {
-      flex: 1;
+      height: 100%;
+      display: flex;
+      gap: 30px;
     }
 
     footer {

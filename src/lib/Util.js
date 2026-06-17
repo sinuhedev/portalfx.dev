@@ -19,4 +19,20 @@ function log(values) {
   )
 }
 
-export { isMobile, log, onResize }
+function storage(key, value) {
+  // setItem
+  if (value !== undefined) return localStorage.setItem(key, value)
+
+  // getItem
+  const val = window.localStorage.getItem(key)
+
+  // boolean
+  if (val === 'true' || val === 'false') return val === 'true'
+
+  // number
+  if (val.trim() !== '' && !Number.isNaN(Number(val))) return Number(val)
+
+  return val
+}
+
+export { isMobile, log, onResize, storage }
