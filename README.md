@@ -11,18 +11,14 @@
 /* default */
 
 ```
+## touchpad
 
-## actions
+![](docs/touchpad.svg)
+
+
+## github actions
 
 - https://github.com/actions/checkout
 - https://github.com/actions/setup-node
 - https://github.com/actions/upload-pages-artifact
 - https://github.com/actions/deploy-pages
-
-## touchpad
-
-![](docs/touchpad.svg)
-
-## demo
-
-demo
