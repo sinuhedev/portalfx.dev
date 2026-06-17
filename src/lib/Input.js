@@ -31,7 +31,19 @@ class Input {
     RIGHT: 0,
     DOWN: 0,
     LEFT: 0,
-    PAUSE_PRESSED: false
+    PAUSE: false,
+    L1: false,
+    L2: false,
+    R1: false,
+    R2: false,
+    DPAD_UP: false,
+    DPAD_RIGHT: false,
+    DPAD_DOWN: false,
+    DPAD_LEFT: false,
+    SQUARE: false,
+    TRIANGLE: false,
+    CIRCLE: false,
+    CROSS: false
   }
 
   #canvas
@@ -213,37 +225,13 @@ class Input {
       if (!gamepad) return
 
       /**
-       * Buttons
-       */
-      const PAUSE = gamepad.buttons[16].pressed
-
-      const LEFT_X = gamepad.axes[0]
-      const LEFT_Y = gamepad.axes[1]
-      const RIGHT_X = gamepad.axes[2]
-      const RIGHT_Y = gamepad.axes[3]
-
-      const L1 = gamepad.buttons[4].pressed
-      const R1 = gamepad.buttons[5].pressed
-
-      const L2 = gamepad.buttons[6].pressed
-      const R2 = gamepad.buttons[7].pressed
-
-      const DPAD_UP = gamepad.buttons[12].pressed
-      const DPAD_DOWN = gamepad.buttons[13].pressed
-      const DPAD_LEFT = gamepad.buttons[14].pressed
-      const DPAD_RIGHT = gamepad.buttons[15].pressed
-
-      const CROSS = gamepad.buttons[0].pressed // X
-      const CIRCLE = gamepad.buttons[1].pressed // O
-      const SQUARE = gamepad.buttons[2].pressed // □
-      const TRIANGLE = gamepad.buttons[3].pressed // △
-
-      /**
        * Pause
        */
 
+      const PAUSE = gamepad.buttons[16].pressed
+
       if (PAUSE) {
-        if (!this.GAMEPAD.PAUSE_PRESSED) {
+        if (!this.GAMEPAD.PAUSE) {
           if (this.IS_PAUSE) {
             this.#ui.winPause.style.display = 'none'
           } else {
@@ -253,15 +241,52 @@ class Input {
           }
 
           this.IS_PAUSE = !this.IS_PAUSE
-          this.GAMEPAD.PAUSE_PRESSED = true
+          this.GAMEPAD.PAUSE = true
         }
-      } else this.GAMEPAD.PAUSE_PRESSED = false
+      } else this.GAMEPAD.PAUSE = false
 
       if (this.IS_PAUSE) return
 
       /**
-       * Inputs
+       * Buttons
        */
+
+      const L1 = gamepad.buttons[4].pressed
+      const L2 = gamepad.buttons[6].pressed
+      const R1 = gamepad.buttons[5].pressed
+      const R2 = gamepad.buttons[7].pressed
+
+      const DPAD_UP = gamepad.buttons[12].pressed
+      const DPAD_RIGHT = gamepad.buttons[15].pressed
+      const DPAD_DOWN = gamepad.buttons[13].pressed
+      const DPAD_LEFT = gamepad.buttons[14].pressed
+
+      const SQUARE = gamepad.buttons[2].pressed // □
+      const TRIANGLE = gamepad.buttons[3].pressed // △
+      const CIRCLE = gamepad.buttons[1].pressed // o
+      const CROSS = gamepad.buttons[0].pressed // X
+
+      this.GAMEPAD.L1 = L1
+      this.GAMEPAD.L2 = L2
+      this.GAMEPAD.R1 = R1
+      this.GAMEPAD.R2 = R2
+      this.GAMEPAD.DPAD_UP = DPAD_UP
+      this.GAMEPAD.DPAD_RIGHT = DPAD_RIGHT
+      this.GAMEPAD.DPAD_DOWN = DPAD_DOWN
+      this.GAMEPAD.DPAD_LEFT = DPAD_LEFT
+      this.GAMEPAD.SQUARE = SQUARE
+      this.GAMEPAD.TRIANGLE = TRIANGLE
+      this.GAMEPAD.CIRCLE = CIRCLE
+      this.GAMEPAD.CROSS = CROSS
+
+      /**
+       * AXIS
+       */
+
+      const LEFT_X = gamepad.axes[0]
+      const LEFT_Y = gamepad.axes[1]
+      const RIGHT_X = gamepad.axes[2]
+      const RIGHT_Y = gamepad.axes[3]
 
       // Sticks — umbral para evitar drift
       const DEAD_ZONE = 0.1
