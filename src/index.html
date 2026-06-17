@@ -6,6 +6,7 @@
   <title>Portal FX.</title>
   <link rel="manifest" href="manifest.json">
   <link rel="shortcut icon" href="logo.svg" />
+  <meta name="version" content="%VERSION%" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <link rel="stylesheet" href="theme/index.css" />
   <script type="module" src="main.js"></script>
@@ -19,6 +20,11 @@
       </main>
 
       <footer>
+        <div>
+          <h3 id="txt-version">version</h3>
+          <h5 id="txt-commit">commit</h5>
+          <h5 id="txt-date">date</h5>
+        </div>
         <button type="button" id="btn-continue">Continue</button>
       </footer>
     </section>

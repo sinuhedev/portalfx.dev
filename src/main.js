@@ -1,6 +1,7 @@
 import 'utils/serviceWorker'
 import Player from 'objects/Player'
 import LevelScene from 'scenes/LevelScene'
+import { getVersion } from 'utils'
 import GameEngine from './lib/GameEngine'
 
 class Game extends GameEngine {
@@ -28,6 +29,12 @@ class Game extends GameEngine {
   onDispose() {}
 }
 
+// version
+document.getElementById('txt-version').textContent = getVersion().version
+document.getElementById('txt-commit').textContent = getVersion().commit
+document.getElementById('txt-date').textContent = getVersion().date
+
+// game
 const canvas = document.querySelector('canvas')
 const game = new Game(canvas)
 game.start()

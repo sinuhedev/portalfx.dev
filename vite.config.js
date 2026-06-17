@@ -1,5 +1,7 @@
+import { execSync } from 'node:child_process'
 import { readFile } from 'node:fs/promises'
 import { defineConfig } from 'vite'
+import { version } from './package.json'
 
 export default defineConfig(() => {
   const CWD = process.cwd()
@@ -27,6 +29,7 @@ export default defineConfig(() => {
       outDir: '../out',
       emptyOutDir: true,
       chunkSizeWarningLimit: 700,
+
       rollupOptions: {
         output: {
           manualChunks(id) {
@@ -45,6 +48,23 @@ export default defineConfig(() => {
     },
 
     plugins: [
+      {
+        name: 'html',
+        transformIndexHtml(html) {
+          let gitHash = 'unknown'
+
+          try {
+            gitHash = execSync('git rev-parse --short HEAD').toString().trim()
+          } catch (e) {
+            console.error(e)
+          }
+
+          return html.replaceAll(
+            '%VERSION%',
+            `version=v${version}, date=${new Date().toISOString()}, commit=#${gitHash}`
+          )
+        }
+      },
       {
         name: 'glsl',
         async load(id) {
