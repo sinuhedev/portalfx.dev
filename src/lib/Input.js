@@ -213,9 +213,13 @@ class Input {
       if (!gamepad) return
 
       /**
-       * Pause
+       * Buttons
        */
       const PAUSE = gamepad.buttons[16].pressed
+
+      /**
+       * Pause
+       */
 
       if (PAUSE) {
         if (!this.GAMEPAD.PAUSE_PRESSED) {
@@ -232,31 +236,32 @@ class Input {
         }
       } else this.GAMEPAD.PAUSE_PRESSED = false
 
+      if (this.IS_PAUSE) return
+
       /**
        * Inputs
        */
-      if (!this.IS_PAUSE) {
-        // Sticks — umbral para evitar drift
-        const DEAD_ZONE = 0.1
-        const lx = Math.abs(gamepad.axes[0]) > DEAD_ZONE ? gamepad.axes[0] : 0
-        const ly = Math.abs(gamepad.axes[1]) > DEAD_ZONE ? gamepad.axes[1] : 0
-        const rx = Math.abs(gamepad.axes[2]) > DEAD_ZONE ? gamepad.axes[2] : 0
-        const ry = Math.abs(gamepad.axes[3]) > DEAD_ZONE ? gamepad.axes[3] : 0
 
-        // Movimiento (stick izquierdo)
-        this.GAMEPAD.LEFT = lx < 0 ? -lx : 0
-        this.GAMEPAD.RIGHT = lx > 0 ? lx : 0
-        this.GAMEPAD.UP = ly < 0 ? -ly : 0
-        this.GAMEPAD.DOWN = ly > 0 ? ly : 0
+      // Sticks — umbral para evitar drift
+      const DEAD_ZONE = 0.1
+      const lx = Math.abs(gamepad.axes[0]) > DEAD_ZONE ? gamepad.axes[0] : 0
+      const ly = Math.abs(gamepad.axes[1]) > DEAD_ZONE ? gamepad.axes[1] : 0
+      const rx = Math.abs(gamepad.axes[2]) > DEAD_ZONE ? gamepad.axes[2] : 0
+      const ry = Math.abs(gamepad.axes[3]) > DEAD_ZONE ? gamepad.axes[3] : 0
 
-        // Cámara (stick derecho)
-        this.AZIMUTH -= rx * 0.05
-        this.POLAR -= ry * 0.05
-        this.POLAR = Math.max(
-          MathUtils.degToRad(30),
-          Math.min(MathUtils.degToRad(60), this.POLAR)
-        )
-      }
+      // Movimiento (stick izquierdo)
+      this.GAMEPAD.LEFT = lx < 0 ? -lx : 0
+      this.GAMEPAD.RIGHT = lx > 0 ? lx : 0
+      this.GAMEPAD.UP = ly < 0 ? -ly : 0
+      this.GAMEPAD.DOWN = ly > 0 ? ly : 0
+
+      // Cámara (stick derecho)
+      this.AZIMUTH -= rx * 0.05
+      this.POLAR -= ry * 0.05
+      this.POLAR = Math.max(
+        MathUtils.degToRad(30),
+        Math.min(MathUtils.degToRad(60), this.POLAR)
+      )
 
       this.#mergeInputs()
     }
