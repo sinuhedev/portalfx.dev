@@ -1,6 +1,6 @@
 # portalfx.dev
 
-![](docs/splash.png)
+![](docs/splash.webp)
 
 ## To start
 
