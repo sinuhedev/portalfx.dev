@@ -24,7 +24,7 @@ function storage(key, value) {
   if (value !== undefined) return localStorage.setItem(key, value)
 
   // getItem
-  const val = window.localStorage.getItem(key)
+  const val = window.localStorage.getItem(key) || ''
 
   // boolean
   if (val === 'true' || val === 'false') return val === 'true'

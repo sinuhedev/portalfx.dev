@@ -1,5 +1,16 @@
 # portalfx.dev
 
+![](docs/splash.png)
+
+## To start
+
+```sh
+npm i 
+npm run dev
+```
+
+Go to [localhost](http://localhost:3000)
+
 ## media query
 ```css
 
