@@ -19,6 +19,8 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -34,7 +36,7 @@ jobs:
 
       - name: Build
         env:
-          PUBLIC_TITLE: ${{ secrets.PUBLIC_TITLE }}
+          PUBLIC_TITLE: ${{ vars.PUBLIC_TITLE }}
         run: npm run build prod
 
       - name: Upload Pages artifact
