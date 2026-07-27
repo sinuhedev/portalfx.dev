@@ -33,7 +33,9 @@ jobs:
         run: npm ci
 
       - name: Build
-        run: npm run build
+        env:
+          PUBLIC_TITLE: Portal FX.
+        run: npm run build prod
         # run: npm run build -- --base=/portalfx.dev
 
       - name: Upload Pages artifact
