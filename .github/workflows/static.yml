@@ -61,5 +61,5 @@ jobs:
         run: |
           curl \
             -H "Content-Type: application/json" \
-            -d "{\"username\":\"github\",\"content\":\" ${GITHUB_REPOSITORY} : ${GITHUB_REF_NAME} \"}" \
+            -d "{\"username\":\"github\",\"content\":\" ${GITHUB_REPOSITORY}  ${GITHUB_REF_NAME} \"}" \
             "https://discord.com/api/webhooks/${DISCORD_TOKEN}"
